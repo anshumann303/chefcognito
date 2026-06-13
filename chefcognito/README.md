@@ -1,30 +1,30 @@
-# Image Analysis
+# ChefCognito
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
-
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/raushan-kumar-thakurs-projects/v0-image-analysis)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/XbvXdLcQJ4S)
+Your Smart Sous-Chef powered by AI
 
 ## Overview
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+ChefCognito is an intelligent recipe generation and ingredient detection application that helps users discover recipes based on available ingredients and preferences.
 
-## Deployment
+## Features
 
-Your project is live at:
+- 🎯 Image-based ingredient detection
+- 🍳 AI-powered recipe suggestions
+- 👥 User preference management
+- 💬 Interactive chat interface
+- 🔄 Smart workflow integration
 
-**[https://vercel.com/raushan-kumar-thakurs-projects/v0-image-analysis](https://vercel.com/raushan-kumar-thakurs-projects/v0-image-analysis)**
+## Getting Started
 
-## Build your app
+1. Clone the repository
+2. Install dependencies: `pnpm install`
+3. Set up environment variables
+4. Run development server: `pnpm dev`
+5. Open [http://localhost:3000](http://localhost:3000)
 
-Continue building your app on:
+## Build for Production
 
-**[https://v0.app/chat/projects/XbvXdLcQJ4S](https://v0.app/chat/projects/XbvXdLcQJ4S)**
-
-## How It Works
-
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+```bash
+pnpm build
+pnpm start
+```
