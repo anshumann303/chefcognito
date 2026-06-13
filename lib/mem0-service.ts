@@ -1,10 +1,16 @@
 import { MemoryClient } from "mem0ai";
 
-if (!process.env.MEM0_API_KEY) {
-	throw new Error('Invalid/Missing environment variable: "MEM0_API_KEY"');
+// Client is initialized lazily at request time so missing env vars don't break the build
+let mem0Client: MemoryClient | null = null;
+function getMem0Client(): MemoryClient {
+	if (!mem0Client) {
+		if (!process.env.MEM0_API_KEY) {
+			throw new Error('Invalid/Missing environment variable: "MEM0_API_KEY"');
+		}
+		mem0Client = new MemoryClient({ apiKey: process.env.MEM0_API_KEY });
+	}
+	return mem0Client;
 }
-
-const mem0Client = new MemoryClient({ apiKey: process.env.MEM0_API_KEY });
 
 export interface UserPreferences {
 	userId: string;

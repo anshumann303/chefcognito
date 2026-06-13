@@ -7,12 +7,16 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['res.cloudinary.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+    ],
     unoptimized: true,
   },
-  experimental: {
-    serverComponentsExternalPackages: ['@langchain/core', '@langchain/community'],
-  },
+  // Moved from experimental in Next.js 15
+  serverExternalPackages: ['@langchain/core', '@langchain/community', 'mongoose'],
 }
 
 export default nextConfig

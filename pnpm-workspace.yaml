@@ -1,0 +1,8 @@
+allowBuilds:
+  '@clerk/shared': set this to true or false
+  '@mongodb-js/zstd': set this to true or false
+  '@tailwindcss/oxide': set this to true or false
+  kerberos: set this to true or false
+  mongodb-client-encryption: set this to true or false
+  sharp: set this to true or false
+  sqlite3: set this to true or false

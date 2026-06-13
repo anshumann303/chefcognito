@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
 
-if (!process.env.MONGODB_URI) {
-	throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
+// Lazily read the URI so a missing env var doesn't crash the build
+function getMongoUri(): string {
+	const uri = process.env.MONGODB_URI;
+	if (!uri) {
+		throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
+	}
+	return uri;
 }
-
-const MONGODB_URI = process.env.MONGODB_URI;
 
 interface MongooseCache {
 	conn: typeof mongoose | null;
@@ -37,7 +40,7 @@ export async function connectToDatabase() {
 		};
 
 		cached.promise = mongoose
-			.connect(MONGODB_URI, opts)
+			.connect(getMongoUri(), opts)
 			.then((mongoose) => {
 				console.log("✅ MongoDB connected successfully via Mongoose");
 				return mongoose;

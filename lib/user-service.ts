@@ -25,7 +25,8 @@ export class UserService {
 	private isInitialized = false;
 
 	constructor() {
-		this.initDb();
+		// Don't call initDb() here — initialise lazily on first request
+		// so a missing MONGODB_URI env var doesn't crash the build
 	}
 
 	private async initDb() {
