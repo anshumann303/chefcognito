@@ -49,17 +49,9 @@ export class Mem0Service {
 		try {
 			// Save to localStorage if in browser environment
 			if (isBrowser) {
-				console.log()
 				this.savePreferencesToLocalStorage(userId, preferences);
 			}
 
-			// For server-side, we'll skip Mem0 operations if we have localStorage data
-			if (isBrowser && this.getPreferencesFromLocalStorage(userId)) {
-				return; // Already saved in localStorage
-			}
-
-			// Try to save to Mem0, but just continue if it fails
-			// We're not actually using mem0Client due to compatibility issues
 			console.log("User preferences saved for user:", userId);
 		} catch (error) {
 			console.error("Error saving user preferences:", error);

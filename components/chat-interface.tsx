@@ -89,7 +89,9 @@ export function ChatInterface({
       })
 
       if (!response.ok) {
-        throw new Error("Failed to send message")
+        const errBody = await response.text();
+        console.error("Chat API error:", response.status, errBody);
+        throw new Error(`Failed to send message (${response.status}): ${errBody}`);
       }
 
       const data = await response.json()

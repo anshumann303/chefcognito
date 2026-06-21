@@ -334,4 +334,18 @@ Respond naturally and helpfully to the user's request.`
   }
 }
 
-export const workflowService = new RecipeWorkflowService()
+// Lazy singleton — don't instantiate at module load so missing OPENAI_API_KEY
+// doesn't crash other routes that don't use the workflow endpoint
+let _workflowService: RecipeWorkflowService | null = null;
+export function getWorkflowService(): RecipeWorkflowService {
+	if (!_workflowService) {
+		_workflowService = new RecipeWorkflowService();
+	}
+	return _workflowService;
+}
+
+// Keep named export for backward compat but make it a proxy
+export const workflowService = {
+	executeWorkflow: (...args: Parameters<RecipeWorkflowService["executeWorkflow"]>) =>
+		getWorkflowService().executeWorkflow(...args),
+};

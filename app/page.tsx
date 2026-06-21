@@ -1,6 +1,7 @@
 "use client";
 
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
+import { SignInButton, UserButton } from "@clerk/nextjs";
 import {
 	Camera,
 	ChefHat,
@@ -33,6 +34,17 @@ import { useRouter } from "next/navigation";
 
 export default function HomePage() {
 	const router = useRouter();
+	const { isSignedIn, isLoaded } = useAuth();
+
+	// Don't render until Clerk has loaded — prevents flash of wrong content
+	if (!isLoaded) {
+		return (
+			<div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex items-center justify-center">
+				<div className="animate-pulse text-muted-foreground">Loading...</div>
+			</div>
+		);
+	}
+
 	return (
 		<DynamicLayoutProvider>
 			<div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -49,25 +61,22 @@ export default function HomePage() {
 							<h1 className="text-2xl font-bold">ChefCognito</h1>
 						</div>
 						<div className="flex items-center gap-4">
-							<SignedIn>
-								<PreferencesDialog />
-							</SignedIn>
+						{isSignedIn && <PreferencesDialog />}
 							<ThemeToggle />
-							<SignedIn>
+							{isSignedIn ? (
 								<UserButton afterSignOutUrl="/" />
-							</SignedIn>
-							<SignedOut>
+							) : (
 								<SignInButton mode="modal">
 									<Button variant="outline">Sign In</Button>
 								</SignInButton>
-							</SignedOut>
+							)}
 						</div>
 					</div>
 				</header>
 
 				{/* Main Content */}
 				<main className="container mx-auto px-4 py-12">
-					<SignedOut>
+					{!isSignedIn ? (
 						<div className="max-w-4xl mx-auto text-center space-y-8">
 							<div className="space-y-4">
 								<h2 className="text-4xl font-bold tracking-tight sm:text-6xl">
@@ -133,11 +142,9 @@ export default function HomePage() {
 								</Button>
 							</SignInButton>
 						</div>
-					</SignedOut>
-
-					<SignedIn>
+					) : (
 						<RecipeGeneratorApp />
-					</SignedIn>
+					)}
 				</main>
 			</div>
 		</DynamicLayoutProvider>

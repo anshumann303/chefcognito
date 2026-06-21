@@ -2,9 +2,6 @@ import { chatService } from "./chat-service";
 import { mem0Service } from "./mem0-service";
 import { RecipeService } from "./recipe-service";
 import { UserService } from "./user-service";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export interface ToolCall {
 	tool: string;

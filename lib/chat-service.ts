@@ -1,9 +1,12 @@
 import { connectToDatabase } from "./mongodb";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 import type { ObjectId } from "mongodb";
 
-// Initialize Gemini AI for summarization
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+function getGenAI() {
+	const key = process.env.GEMINI_API_KEY;
+	if (!key || key === "placeholder") throw new Error("GEMINI_API_KEY not configured");
+	return new GoogleGenAI({ apiKey: key });
+}
 
 export interface ChatMessage {
 	_id?: ObjectId;
@@ -237,12 +240,12 @@ ${conversationText}
 Provide a concise summary in 2-3 sentences that captures the main topics and context.
 `;
 
-			const model = genAI.getGenerativeModel({
+			const ai = getGenAI();
+			const result = await ai.models.generateContent({
 				model: "gemini-2.5-flash",
+				contents: [{ role: "user", parts: [{ text: prompt }] }],
 			});
-			const result = await model.generateContent(prompt);
-			const response = await result.response;
-			const summary = response.text().trim();
+			const summary = (result.text ?? "").trim();
 
 			return (
 				summary ||

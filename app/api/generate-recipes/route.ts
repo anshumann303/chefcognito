@@ -1,11 +1,14 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 import { RecipeService } from "@/lib/recipe-service";
 import { v4 as uuidv4 } from "uuid";
 
-// Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+function getGenAI() {
+	const key = process.env.GEMINI_API_KEY;
+	if (!key || key === "placeholder") throw new Error("GEMINI_API_KEY not configured");
+	return new GoogleGenAI({ apiKey: key });
+}
 
 interface DetectedIngredient {
 	name: string;
@@ -118,10 +121,12 @@ Return only the JSON response, no additional text.
 `;
 
 		// Call Gemini API
-		const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-		const result = await model.generateContent(prompt);
-		const response = await result.response;
-		const text = response.text();
+		const genAI = getGenAI();
+		const result = await genAI.models.generateContent({
+			model: "gemini-2.5-flash",
+			contents: [{ role: "user", parts: [{ text: prompt }] }],
+		});
+		const text = result.text ?? "";
 
 		// Parse JSON response
 		let parsedResponse;
